@@ -4,6 +4,8 @@ from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from utils import attach
+
 
 @pytest.fixture()
 def setup_browser():
@@ -13,7 +15,7 @@ def setup_browser():
         "browserVersion": "100.0",
         "selenoid:options": {
             "enableVNC": True,
-            "enableVideo": False
+            "enableVideo": True
         }
     }
     options.capabilities.update(selenoid_capabilities)
@@ -23,4 +25,12 @@ def setup_browser():
     )
 
     browser.config.driver = driver
+
     yield browser
+
+    attach.add_screenshot(browser)
+    attach.add_logs(browser)
+    attach.add_html(browser)
+    attach.add_video(browser)
+
+    browser.quit()

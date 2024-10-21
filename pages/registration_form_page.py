@@ -1,3 +1,4 @@
+import allure
 from selene import browser, have, command, be
 
 from helpers import resources
@@ -8,33 +9,40 @@ from models.user import User
 class RegistrationPage:
 
     @staticmethod
+    @allure.step('Open registration form')
     def open_form():
         browser.open('https://demoqa.com/automation-practice-form')
         browser.driver.execute_script("$('#fixedban').remove()")
         browser.driver.execute_script("$('footer').remove()")
 
     @staticmethod
+    @allure.step('Fill first name')
     def set_first_name(value: str):
         browser.element('#firstName').type(value)
 
     @staticmethod
+    @allure.step('Fill last name')
     def set_last_name(value: str):
         browser.element('#lastName').type(value)
 
     @staticmethod
+    @allure.step('Fill email')
     def set_email(value: str):
         browser.element('#userEmail').type(value)
 
     @staticmethod
+    @allure.step('Choose gender')
     def set_gender(gender: Gender):
         browser.all('[name="gender"]').element_by(have.attribute(name='value', value=gender)).element(
             '../label').click()
 
     @staticmethod
+    @allure.step('Fill phone number')
     def set_phone_number(phone_number: str):
         browser.element('#userNumber').type(phone_number)
 
     @staticmethod
+    @allure.step('Fill birth date')
     def set_birth_date(year: int, month: Month, day: int):
 
         def adjust_day_repr(day):
@@ -50,6 +58,7 @@ class RegistrationPage:
         browser.element(f'.react-datepicker__day--{day}').click()
 
     @staticmethod
+    @allure.step('Choose favorite subjects')
     def set_subjects(subjects: dict[str, Subject]):
         for letter, subject in subjects.items():
             browser.element('#subjectsInput').type(letter)
@@ -57,33 +66,40 @@ class RegistrationPage:
                 command.js.scroll_into_view).click()
 
     @staticmethod
+    @allure.step('Check hobbies')
     def set_hobbies(hobbies: list[Hobbies]):
         for item in hobbies:
             browser.element(f'//label[text()="{item.value}"]').click()
 
     @staticmethod
+    @allure.step('Upload picture')
     def upload_picture(file_name: str):
         browser.element('#uploadPicture').set_value(resources.get_path(file_name))
 
     @staticmethod
+    @allure.step('Fill current address')
     def set_current_address(value: str):
         browser.element('#currentAddress').type(value)
 
     @staticmethod
+    @allure.step('Choose state')
     def set_state(value: State):
         browser.element('#state').click()
         browser.element(f'//*[text()="{value}"]').click()
 
     @staticmethod
+    @allure.step('Choose city')
     def set_city(value: City):
         browser.element('#city').click()
         browser.element(f'//*[text()="{value}"]').click()
 
     @staticmethod
+    @allure.step('Submit form')
     def submit_form():
         browser.element('button#submit').click()
 
     @staticmethod
+    @allure.step('Check registration succeeded')
     def should_have_registered_user_with_data(user: User):
 
         def adjust_birth_day_repr(day):
